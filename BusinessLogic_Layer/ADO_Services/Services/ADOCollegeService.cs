@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic_Layer.ADO_Services.Services
 {
-    internal class ADOCollegeService
+    public class ADOCollegeService
     {
     }
 }
