@@ -10,5 +10,9 @@ namespace UserInterface_Layer.Controllers
     [ApiController]
     public class AdoCollegeController : ControllerBase
     {
+        public AdoCollegeController()
+        {
+
+        }
     }
 } 
