@@ -24,7 +24,7 @@ namespace UserInterface_Layer.Controllers
 
         [HttpGet("GetCollegesById")]
 
-        public async Task<IActionResult> GetColleges(int id)=>Ok(_icollegeService.GetCollegeById(id));
+        public async Task<IActionResult> GetColleges(int id)=>Ok(await _icollegeService.GetCollegeById(id));
 
         [HttpGet("GetCollegesByName")]
 
