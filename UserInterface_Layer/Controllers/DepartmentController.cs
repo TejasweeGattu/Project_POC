@@ -67,6 +67,10 @@ namespace UserInterface_Layer.Controllers
         //    return BadRequest();
         //}
 
+        [HttpDelete("DeleteByName")]
+        public IActionResult DeleteByName(string name) => Ok(_idepartmentService.DeleteDepartment(name));
+
+
 
 
     }

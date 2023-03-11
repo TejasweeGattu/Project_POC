@@ -17,17 +17,17 @@ namespace BusinessLogic_Layer.Repositories.Services
     public class CollegeService : ICollegeService
     {
         private readonly ClgDeptStudentDbContext _dbContext;
-        //private readonly ILogger _logger;
+     //  private readonly ILogger _logger;
         public CollegeService(ClgDeptStudentDbContext dbContext)
         {
             _dbContext = dbContext;
-          //  _logger= logger;
+          // _logger= logger;
         }
 
 
         public async Task<List<College>> GetAll()
         {
-
+           // _logger.LogInformation("Log for GetAll");
             try
             {
 
@@ -48,11 +48,6 @@ namespace BusinessLogic_Layer.Repositories.Services
             }
 
         }
-
-        //public IEnumerable<College> GetAll()
-        //{
-        //    return _dbContext.Colleges.ToList();
-        //}
 
         public async Task<College> GetCollegeById(int id)
         {
@@ -123,23 +118,6 @@ namespace BusinessLogic_Layer.Repositories.Services
 
         }
 
-        //public int Update(int clg)
-        //{
-        //   // var transaction = _dbContext.Database.BeginTransactionAsync();
-        //    try
-        //    {
-        //       // _dbContext.Colleges.Update(clg);
-        //        _dbContext.SaveChangesAsync();
-        //        return clg;
-        //    }
-        //    catch (ApiException ex)
-        //    {
-        //       // transaction.Commit();
-        //        throw new ApiException(ex.Message);
-        //    }
-        //    finally { _dbContext.Dispose(); }
-
-        //}
         public async Task<College> Update(College clg)
         {
             var transaction = await _dbContext.Database.BeginTransactionAsync();

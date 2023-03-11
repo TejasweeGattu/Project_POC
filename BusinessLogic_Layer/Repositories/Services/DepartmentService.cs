@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess_Layer.DTO;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace BusinessLogic_Layer.Repositories.Services
 {
@@ -122,14 +123,14 @@ namespace BusinessLogic_Layer.Repositories.Services
 
         }
 
-        public async Task<string> DeleteDepartment(string name)
+        public string DeleteDepartment(string name)
         {
             try
             {
-                var query = $@"update [dbo].[Department] set ActiveFlag=0 from [dbo].[College] as c, [dbo].[Department] as d where c.Cid=d.Cid and c.CName='{name}'";
-                await _dbContext.Departments.FromSqlRaw<Department>(query).FirstOrDefaultAsync();
-                await _dbContext.SaveChangesAsync();
-                return name;
+                var query = $@"update [dbo].[Department] set ActiveFlag=0 from [dbo].[College] as c, [dbo].[Department] as d where c.Cid=d.Cid and c.CName={name}";
+                 _dbContext.Departments.FromSqlRaw<Department>(query);
+                
+                return "Soft delete completed";
             }
             catch (Exception ex)
             {
@@ -139,5 +140,19 @@ namespace BusinessLogic_Layer.Repositories.Services
 
 
         }
+
+        //public string DeleteById(string name)
+        //{
+        //    try
+        //    {
+        //        var query = $"update[dbo].[Department] set Activeflag = 0 from[dbo].[College] as c,[dbo].[Department] as d where c.id = d.Cid and c.Cname = '@name'";
+        //        _context.Students.FromSqlRaw(query);
+        //        return "Record Deleted Sucessfully";
+        //    }
+        //    catch (BadRequest e)
+        //    {
+        //        throw new BadRequest($"Could not delete {e.Message}");
+        //    }
+        //}
     }
 }

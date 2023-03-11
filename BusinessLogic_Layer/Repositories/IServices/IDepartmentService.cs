@@ -16,6 +16,6 @@ namespace BusinessLogic_Layer.Repositories.IServices
         // Task<Department> PostDepartment(Department department);
         Department PostDepartment(Dto department);
         Task<Department> UpdateDept(Department department);
-        Task<string> DeleteDepartment(string name);
+        string DeleteDepartment(string name);
     }
 }
