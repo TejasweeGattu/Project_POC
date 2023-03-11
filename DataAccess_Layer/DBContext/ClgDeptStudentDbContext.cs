@@ -4,6 +4,7 @@ using DataAccess_Layer.Authentication_Models;
 using DataAccess_Layer.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using DataAccess_Layer.FileModels;
 
 namespace DataAccess_Layer.DBContext;
 
@@ -23,6 +24,8 @@ public partial class ClgDeptStudentDbContext : IdentityDbContext<ApplicationUser
     public virtual DbSet<Department> Departments { get; set; }
 
     public virtual DbSet<Student> Students { get; set; }
+
+    public DbSet<FileDetails> FileDetails { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -130,6 +133,7 @@ public partial class ClgDeptStudentDbContext : IdentityDbContext<ApplicationUser
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Student_Department");
         });
+
         base.OnModelCreating(modelBuilder);
         //  OnModelCreatingPartial(modelBuilder);
     }

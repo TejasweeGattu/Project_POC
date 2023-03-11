@@ -36,9 +36,9 @@ namespace UserInterface_Layer.Controllers
         public async Task<IActionResult> Post([FromBody] College clg)=>Ok(await _icollegeService.PostCollege(clg));
 
 
-        //[HttpPut("UpdateCollege")]
-        //public async Task<ActionResult> UpdateCollege([FromBody] College clg) => Ok(await _icollegeService.Update(clg));
-        
+        [HttpPut("UpdateCollege")]
+        public async Task<ActionResult> UpdateCollege([FromBody] College clg) => Ok(await _icollegeService.Update(clg));
+
         //[HttpDelete("DeleteCollegeById")]
 
         //public IActionResult DeleteColleges(int id)
