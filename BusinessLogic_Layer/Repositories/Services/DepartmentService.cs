@@ -9,18 +9,25 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccess_Layer.DTO;
 using Microsoft.AspNetCore.Http.HttpResults;
+using BusinessLogic_Layer.Loggers;
 
 namespace BusinessLogic_Layer.Repositories.Services
 {
     public class DepartmentService : IDepartmentService
     {
         private readonly ClgDeptStudentDbContext _dbContext;
+        private readonly ILoggerManager _logger;
 
-        public DepartmentService(ClgDeptStudentDbContext dbContext) => _dbContext = dbContext;
+        public DepartmentService(ClgDeptStudentDbContext dbContext,ILoggerManager logger)
+        {
+            _dbContext = dbContext;
+            _logger = logger;
+        }
 
 
         public async Task<List<Department>> GetAll()
         {
+            _logger.LogInfo("Here is info message from the GetAll in Department.");
             var transaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
@@ -32,6 +39,7 @@ namespace BusinessLogic_Layer.Repositories.Services
             {
                 transaction.Commit();
                 transaction.Rollback();
+                _logger.LogWarn(ex.Message);
                 throw new ApiException(ex.Message);
             }
             finally { transaction.Dispose(); }
@@ -40,6 +48,7 @@ namespace BusinessLogic_Layer.Repositories.Services
 
         public async Task<Department> GetDepartmentsById(int id)
         {
+            _logger.LogInfo("Here is info message from the GetDepartmentsById");
             var transaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
@@ -52,7 +61,8 @@ namespace BusinessLogic_Layer.Repositories.Services
             }
             catch (ApiException ex)
             {
-                transaction.Commit();
+              //  transaction.Commit();
+                _logger.LogWarn(ex.Message);
                 throw new ApiException(ex.Message);
             }
 
@@ -60,6 +70,7 @@ namespace BusinessLogic_Layer.Repositories.Services
 
         public async Task<Department> GetDepartmentsByName(string name)
         {
+            _logger.LogInfo("Here is info message from the GetDepartmentsByName");
             var transaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
@@ -73,6 +84,7 @@ namespace BusinessLogic_Layer.Repositories.Services
             catch (ApiException ex)
             {
                 transaction.Commit();
+                _logger.LogWarn(ex.Message);
                 throw new ApiException(ex.Message);
             }
 
@@ -80,6 +92,7 @@ namespace BusinessLogic_Layer.Repositories.Services
 
         public Department PostDepartment(Dto department)
         {
+            _logger.LogInfo("Here is info message from the PostDepartment");
             try
             {
                 var college = _dbContext.Colleges.FirstOrDefault(x => x.Cname == department.Cname);
@@ -100,7 +113,7 @@ namespace BusinessLogic_Layer.Repositories.Services
             }
             catch (ApiException ex)
             {
-
+                _logger.LogWarn(ex.Message);
                 throw new ApiException(ex.Message);
             }
             return null;
@@ -108,6 +121,7 @@ namespace BusinessLogic_Layer.Repositories.Services
 
         public async Task<Department> UpdateDept(Department department)
         {
+            _logger.LogInfo("Here is info message from the UpdateDepartment");
             var transaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
@@ -118,6 +132,7 @@ namespace BusinessLogic_Layer.Repositories.Services
             catch (ApiException ex)
             {
                 transaction.Commit();
+                _logger.LogWarn(ex.Message);
                 throw new ApiException(ex.Message);
             }
 
@@ -134,7 +149,7 @@ namespace BusinessLogic_Layer.Repositories.Services
             }
             catch (Exception ex)
             {
-
+                _logger.LogWarn(ex.Message);
                 throw new ArgumentException(ex.Message);
             }
 
