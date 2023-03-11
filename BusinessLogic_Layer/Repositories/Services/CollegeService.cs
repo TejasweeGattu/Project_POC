@@ -11,23 +11,24 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Runtime.InteropServices;
 using static Azure.Core.HttpHeader;
 using Microsoft.Extensions.Logging;
+using BusinessLogic_Layer.Loggers;
 
 namespace BusinessLogic_Layer.Repositories.Services
 {
     public class CollegeService : ICollegeService
     {
         private readonly ClgDeptStudentDbContext _dbContext;
-     //  private readonly ILogger _logger;
-        public CollegeService(ClgDeptStudentDbContext dbContext)
+        private readonly ILoggerManager _logger;
+        public CollegeService(ClgDeptStudentDbContext dbContext,ILoggerManager logger)
         {
             _dbContext = dbContext;
-          // _logger= logger;
+           _logger= logger;
         }
 
 
         public async Task<List<College>> GetAll()
         {
-           // _logger.LogInformation("Log for GetAll");
+            _logger.LogInfo("Here is info message from the GetAll.");
             try
             {
 
@@ -39,7 +40,7 @@ namespace BusinessLogic_Layer.Repositories.Services
             }
             catch (Exception ex)
             {
-
+                _logger.LogWarn(ex.Message);
                 throw new ArgumentException(ex.Message);
             }
             finally
@@ -51,7 +52,8 @@ namespace BusinessLogic_Layer.Repositories.Services
 
         public async Task<College> GetCollegeById(int id)
         {
-           // var transaction =  _dbContext.Database.BeginTransactionAsync();
+            // var transaction =  _dbContext.Database.BeginTransactionAsync();
+            _logger.LogInfo("Here is info message from the GetCollegeById.");
             try
             {
                 var clg = _dbContext.Colleges.FirstOrDefault(c => c.Cid == id);
@@ -66,7 +68,8 @@ namespace BusinessLogic_Layer.Repositories.Services
             }
             catch (ApiException ex)
             {
-              //  transaction.Commit();
+                //  transaction.Commit();
+                _logger.LogWarn(ex.Message);
                 throw new ApiException(ex.Message);
             }
             finally
@@ -77,6 +80,7 @@ namespace BusinessLogic_Layer.Repositories.Services
 
         public async Task<College> GetCollegeByName(string name)
         {
+            _logger.LogInfo("Here is info message from the GetCollegeByName.");
             var transaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
@@ -92,6 +96,7 @@ namespace BusinessLogic_Layer.Repositories.Services
             catch (Exception ex)
             {
                 transaction.Commit();
+                _logger.LogWarn(ex.Message);
                 throw new ArgumentException(ex.Message);
             }
             finally { _dbContext.Dispose(); }
@@ -99,6 +104,7 @@ namespace BusinessLogic_Layer.Repositories.Services
 
         public async Task<College> PostCollege(College college)
         {
+            _logger.LogInfo("Here is info message from the PostCollege.");
             var transaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
@@ -109,6 +115,7 @@ namespace BusinessLogic_Layer.Repositories.Services
             catch (ApiException ex)
             {
                 transaction.Commit();
+                _logger.LogWarn(ex.Message);
                 throw new ApiException(ex.Message);
             }
             finally
@@ -120,6 +127,7 @@ namespace BusinessLogic_Layer.Repositories.Services
 
         public async Task<College> Update(College clg)
         {
+            _logger.LogInfo("Here is info message from the UpdateCollege.");
             var transaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
@@ -130,7 +138,9 @@ namespace BusinessLogic_Layer.Repositories.Services
             catch (ApiException ex)
             {
                 transaction.Commit();
+                _logger.LogWarn(ex.Message);
                 throw new ApiException(ex.Message);
+                
             }
             finally { _dbContext.Dispose(); }
 

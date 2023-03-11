@@ -7,18 +7,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLogic_Layer.Loggers;
 
 namespace BusinessLogic_Layer.Repositories.Services
 {
     public class StudentService : IStudentService
     {
         private readonly ClgDeptStudentDbContext _dbContext;
+        private readonly ILoggerManager _logger;
 
-        public StudentService(ClgDeptStudentDbContext dbContext) => this._dbContext = dbContext;
+        public StudentService(ClgDeptStudentDbContext dbContext,ILoggerManager logger)
+        {
+            _dbContext = dbContext;
+            _logger = logger;
+
+        } 
 
 
         public async Task<List<Student>> GetAll()
         {
+            _logger.LogInfo("Here is info message from the GetAll in Student.");
             var transaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
@@ -26,6 +34,7 @@ namespace BusinessLogic_Layer.Repositories.Services
             }
             catch (ApiException ex) {
                 transaction.Commit();
+                _logger.LogWarn(ex.Message);
                 throw new ApiException(ex.Message);
             }
             finally { _dbContext.Dispose(); }
@@ -34,6 +43,7 @@ namespace BusinessLogic_Layer.Repositories.Services
 
         public async Task<Student> GetStudentById(int id)
         {
+            _logger.LogInfo("Here is info message from GetStudentById.");
             var transaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
@@ -46,6 +56,7 @@ namespace BusinessLogic_Layer.Repositories.Services
             }
             catch (ApiException ex) {
                 transaction.Commit();
+                _logger.LogWarn(ex.Message);
                 throw new ApiException(ex.Message);
             }
             finally { _dbContext.Dispose(); }
@@ -53,6 +64,7 @@ namespace BusinessLogic_Layer.Repositories.Services
         }
         public async Task<Student> GetStudentByName(string name)
         {
+            _logger.LogInfo("Here is info message from GetStudentByName ");
             var transaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
@@ -65,6 +77,7 @@ namespace BusinessLogic_Layer.Repositories.Services
             }
             catch (ApiException ex) {
                 transaction.Commit();
+                _logger.LogWarn(ex.Message);
                 throw new ApiException(ex.Message); 
             }
             finally { _dbContext.Dispose(); }
@@ -73,6 +86,7 @@ namespace BusinessLogic_Layer.Repositories.Services
 
         public async Task<Student> PostStudent(Student student)
         {
+            _logger.LogInfo("Here is info message from the PostStudent");
             var transaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
@@ -83,6 +97,7 @@ namespace BusinessLogic_Layer.Repositories.Services
             catch (ApiException ex) 
             {
                 transaction.Commit();
+                _logger.LogWarn(ex.Message);
                 throw new ApiException(ex.Message);
             }
             finally { _dbContext.Dispose(); }
@@ -90,6 +105,7 @@ namespace BusinessLogic_Layer.Repositories.Services
 
         public async Task<Student> UpdateStudent(Student student)
         {
+            _logger.LogInfo("Here is info message from the UpdateStudent.");
             var transaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
@@ -100,6 +116,7 @@ namespace BusinessLogic_Layer.Repositories.Services
             catch (ApiException ex)
             {
                 transaction.Commit();
+                _logger.LogWarn(ex.Message);
                 throw new ApiException(ex.Message);
             }
             finally { _dbContext.Dispose(); }

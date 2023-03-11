@@ -1,3 +1,4 @@
+using BusinessLogic_Layer.Loggers;
 using BusinessLogic_Layer.Repositories.IServices;
 using BusinessLogic_Layer.Repositories.Services;
 using BusinessLogic_Layer.Services;
@@ -11,11 +12,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using NLog;
 using Serilog;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 // Add services to the container.
 builder.Services.AddMvc()
      .AddNewtonsoftJson(
@@ -30,6 +33,7 @@ builder.Services.AddTransient<ICollegeService, CollegeService>();
 builder.Services.AddTransient<IDepartmentService, DepartmentService>();
 builder.Services.AddTransient<IStudentService, StudentService>();
 builder.Services.AddTransient<IFileService, FileService>();
+builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

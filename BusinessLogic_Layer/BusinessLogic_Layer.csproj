@@ -14,4 +14,8 @@
     <Folder Include="SQL scripts\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="5.1.2" />
+  </ItemGroup>
+
 </Project>
